@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Bortex</string>
+
+    <!-- UI Strings-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Categories Strings-->
+    <string-array name="categories">
+        <item>Accessories</item>
+        <item>Blazers</item>
+        <item>Hoodies and Sweatshirts</item>
+        <item>Jackets and Coats</item>
+        <item>Jeans</item>
+        <item>Swimwear</item>
+        <item>Suits</item>
+        <item>Trousers</item>
+        <item>Underwear and Socks</item>
+    </string-array>
+</resources>
