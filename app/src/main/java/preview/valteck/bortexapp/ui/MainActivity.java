@@ -16,6 +16,7 @@ import preview.valteck.bortexapp.ui.browse_fragment.BrowseFragment;
 import preview.valteck.bortexapp.ui.browse_fragment.FilteredCategoryFragment;
 import preview.valteck.bortexapp.ui.browse_fragment.FragmentName;
 import preview.valteck.bortexapp.ui.browse_fragment.ItemFragment;
+import preview.valteck.bortexapp.ui.favourites_fragment.FavouritesFragment;
 import preview.valteck.bortexapp.ui.home_fragment.HomeFragment;
 import preview.valteck.bortexapp.ui.shopping_cart_fragment.ShoppingCartFragment;
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 .addItem(new BottomNavigationItem(R.drawable.ic_home_24dp, "Home"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_browse_24dp, "Browse"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_shopping_cart_24dp, "Cart"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_favorite_24dp, "Favourites"))
                 .setMode(BottomNavigationBar.MODE_FIXED_NO_TITLE)
                 .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
                 .setActiveColor(R.color.colorAccent)
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = ShoppingCartFragment.newInstance();
                         break;
                     case 3:
-                        selectedFragment = ProfileFragment.newInstance();
+                        selectedFragment = FavouritesFragment.newInstance();
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

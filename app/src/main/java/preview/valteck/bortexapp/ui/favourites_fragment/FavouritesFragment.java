@@ -1,4 +1,4 @@
-package preview.valteck.bortexapp.ui.shopping_cart_fragment;
+package preview.valteck.bortexapp.ui.favourites_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -20,24 +19,28 @@ import preview.valteck.bortexapp.R;
  * Created by SterlingRyan on 7/27/2017.
  */
 
-public class ShoppingCartFragment extends Fragment {
+public class FavouritesFragment extends Fragment{
 
     public static Fragment newInstance() {
-        ShoppingCartFragment fragment = new ShoppingCartFragment();
+        FavouritesFragment fragment = new FavouritesFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.shopping_cart_list_view);
-        listView.setAdapter(new ShoppingCartListAdapter());
-        Button payNowButton = (Button) view.findViewById(R.id.pay_now_button);
-        return view;
+        ListView favouritesListView = (ListView) inflater.inflate(R.layout.fragment_favourites, container, false);
+        favouritesListView.setAdapter(new FavouritesListAdapter());
+        return favouritesListView;
+
     }
 
-    private class ShoppingCartListAdapter extends BaseAdapter{
+    private class FavouritesListAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {

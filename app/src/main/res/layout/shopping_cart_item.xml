@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@android:color/transparent">
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent">
 
-    <ImageView
+        <ImageView
             android:id="@+id/item_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:layout_weight="6"/>
 
-    <RelativeLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="3">
 
-        <TextView
+            <TextView
                 android:id="@+id/title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Default"
+                android:textColor="@color/colorText"
                 android:textSize="18sp"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
 
-        <TextView
+            <TextView
                 android:id="@+id/item_price_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,24 +44,25 @@
                 android:layout_below="@+id/title_text_view"
                 android:layout_alignStart="@+id/title_text_view"/>
 
-        <TextView
+            <TextView
                 android:id="@+id/item_details_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="S / Blue / 1"
                 android:textSize="16sp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/item_price_text_view"
-                android:layout_marginBottom="8dp"/>
+                android:textColor="@color/colorText"
+                android:layout_alignBottom="@+id/imageView2"
+                android:layout_alignStart="@+id/item_price_text_view" />
 
-        <ImageView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_delete_24dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="8dp"/>
+                android:layout_margin="8dp"
+                android:id="@+id/imageView2" />
 
-    </RelativeLayout>
-
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
