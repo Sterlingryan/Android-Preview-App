@@ -11,7 +11,7 @@ public class Item implements Serializable{
 
     private String itemId;
     private String name;
-    private HashMap<String, String> imagesURL;
+    private String imageURL;
     private HashMap<String, String> colours;
     private HashMap<String, String> size;
     private String description;
@@ -22,6 +22,17 @@ public class Item implements Serializable{
      *  Empty constructor for Firebase
      */
     public Item() {}
+
+    public Item(String itemId, String name, String imageURL, HashMap<String, String> colours, HashMap<String, String> size, String description, String price, String itemType) {
+        this.itemId = itemId;
+        this.name = name;
+        this.imageURL = imageURL;
+        this.colours = colours;
+        this.size = size;
+        this.description = description;
+        this.price = price;
+        this.itemType = itemType;
+    }
 
     public String getItemId() {
         return itemId;
@@ -39,12 +50,12 @@ public class Item implements Serializable{
         this.name = name;
     }
 
-    public HashMap<String, String> getImagesURL() {
-        return imagesURL;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImagesURL(HashMap<String, String> imagesURL) {
-        this.imagesURL = imagesURL;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public HashMap<String, String> getColours() {

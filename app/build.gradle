@@ -49,6 +49,9 @@ dependencies {
 
     // Asymmetric Grid View
     compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
+
+    // Firebase Database
+    compile 'com.google.firebase:firebase-database:10.0.1'
 }
 
 // Firebase plugin

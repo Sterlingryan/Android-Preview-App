@@ -8,13 +8,12 @@
     <!-- Categories Strings-->
     <string-array name="categories">
         <item>Accessories</item>
-        <item>Blazers</item>
-        <item>Hoodies and Sweatshirts</item>
+        <item>T-Shirts</item>
+        <item>Hoodies</item>
         <item>Jackets and Coats</item>
-        <item>Jeans</item>
-        <item>Swimwear</item>
+        <item>Shoes</item>
         <item>Suits</item>
-        <item>Trousers</item>
+        <item>Jeans</item>
         <item>Underwear and Socks</item>
     </string-array>
 </resources>
