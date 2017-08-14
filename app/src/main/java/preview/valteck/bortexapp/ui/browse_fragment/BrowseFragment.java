@@ -15,13 +15,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import preview.valteck.bortexapp.R;
 import preview.valteck.bortexapp.ui.MainActivity;
+import preview.valteck.bortexapp.utility.Constants;
 
 /**
  * Created by SterlingRyan on 7/27/2017.
@@ -29,7 +29,7 @@ import preview.valteck.bortexapp.ui.MainActivity;
 
 public class BrowseFragment extends Fragment{
 
-    private String[] mTitles = getResources().getStringArray(R.array.categories);
+    private String[] mTitles;
     private int[] mImages = new int[]{
             R.drawable.acessories,
             R.drawable.t_shirt,
@@ -51,10 +51,38 @@ public class BrowseFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         GridView gridView = (GridView) inflater.inflate(R.layout.fragment_browse, container, false);
         gridView.setAdapter(new CategoryViewAdapter());
+        mTitles = getResources().getStringArray(R.array.categories);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainActivity) getActivity()).replaceFragment(FragmentName.FILTERED_CATEGORY, mTitles[position]);
+                String category = null;
+                switch (position){
+                    case 0 :
+                        category = Constants.CATEGORY_ACCESSORIES;
+                        break;
+                    case 1 :
+                        category = Constants.CATEGORY_T_SHIRTS;
+                        break;
+                    case 2:
+                        category = Constants.CATEGORY_HOODIES;
+                        break;
+                    case 3 :
+                        category = Constants.CATEGORY_JACKETS_AND_COATS;
+                        break;
+                    case 4 :
+                        category = Constants.CATEGORY_SHOES;
+                        break;
+                    case 5 :
+                        category = Constants.CATEGORY_SUITS;
+                        break;
+                    case 6 :
+                        category = Constants.CATEGORY_JEANS;
+                        break;
+                    case 7 :
+                        category = Constants.CATEGORY_UNDERWEAR_AND_SOCKS;
+                        break;
+                }
+                ((MainActivity) getActivity()).replaceFragment(FragmentName.FILTERED_CATEGORY, category);
             }
         });
         ViewCompat.setNestedScrollingEnabled(gridView,true);
@@ -70,7 +98,7 @@ public class BrowseFragment extends Fragment{
 
         @Override
         public int getCount() {
-            return mTitles.length;
+            return mImages.length;
         }
 
         @Override

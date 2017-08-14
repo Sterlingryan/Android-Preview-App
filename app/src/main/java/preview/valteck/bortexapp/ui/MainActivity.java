@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
@@ -23,6 +25,7 @@ import preview.valteck.bortexapp.ui.browse_fragment.ItemFragment;
 import preview.valteck.bortexapp.ui.favourites_fragment.FavouritesFragment;
 import preview.valteck.bortexapp.ui.home_fragment.HomeFragment;
 import preview.valteck.bortexapp.ui.shopping_cart_fragment.ShoppingCartFragment;
+import preview.valteck.bortexapp.utility.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
         setUpBottomNavigationBar();
         setUpToolbar();
-        createAccessoriesJSONFiles();
     }
 
     private void setUpBottomNavigationBar(){
@@ -122,9 +124,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (fragment){
             case FILTERED_CATEGORY:
-                FilteredCategoryFragment filteredCategoryFragment = new FilteredCategoryFragment();
-                filteredCategoryFragment.setCategory(category);
-                transaction.replace(R.id.frame_layout,filteredCategoryFragment );
+                transaction.replace(R.id.frame_layout, FilteredCategoryFragment.newInstance(category) );
                 transaction.addToBackStack(FragmentName.FILTERED_CATEGORY.toString());
                 break;
             case ITEM:
@@ -134,31 +134,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         transaction.commit();
-    }
-
-    private void createAccessoriesJSONFiles(){
-        HashMap<String, String> colorsOne = new HashMap<>();
-        HashMap<String, String> sizeOne = new HashMap<>();
-        colorsOne.put("tan", "Tan");
-        sizeOne.put("XXS/XS", "XXS/XS");
-        sizeOne.put("S/M", "S/M");
-        sizeOne.put("XL/XXL", "XL/XXL");
-        Item itemOne = new Item("1", "Slim Leather Belt In Tan",
-                "http://images.asos-media.com/products/asos-slim-leather-belt-in-tan-with-whip-stitch/8064183-1-tan?$XXL$&wid=513&fit=constrain",
-                colorsOne,
-                sizeOne,
-                "Leather strap," +
-                        "Whip-stitch detail," +
-                        "Adjustable length," +
-                        "Pi-buckle closure," +
-                        "Single keeper," +
-                        "Belt fits true to size," +
-                        "Please buy in your normal trouser size," +
-                        "Do not wash," +
-                        "100% Real Leather," +
-                        "Belt width: 3cm/1\"",
-                "18.92",
-                "accessories"
-        );
     }
 }

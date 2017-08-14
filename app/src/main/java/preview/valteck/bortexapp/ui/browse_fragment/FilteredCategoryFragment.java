@@ -1,8 +1,5 @@
 package preview.valteck.bortexapp.ui.browse_fragment;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,12 +13,18 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 import preview.valteck.bortexapp.R;
 import preview.valteck.bortexapp.ui.MainActivity;
+import preview.valteck.bortexapp.utility.Constants;
 
 /**
  * Created by SterlingRyan on 8/1/2017.
@@ -32,17 +35,21 @@ public class FilteredCategoryFragment extends Fragment {
     private HashMap<String, String> itemsHashMap;
     private String category;
 
-    public static Fragment newInstance(){
-        return new FilteredCategoryFragment();
+    public static Fragment newInstance(String category) {
+        FilteredCategoryFragment filteredCategoryFragment = new FilteredCategoryFragment();
+        Bundle args = new Bundle();
+        args.putString(Constants.FIREBASE_CATEGORIES, category);
+        filteredCategoryFragment.setArguments(args);
+        return filteredCategoryFragment;
     }
 
-    public void setCategory(String category){
-        this.category = category;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.category = savedInstanceState.getString(Constants.FIREBASE_CATEGORIES);
+        retrieveCategoryItems();
+        String hry;
     }
-
-//    private HashMap<String, String> retreiveItemsData(){
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-//    }
 
     @Nullable
     @Override
@@ -57,6 +64,21 @@ public class FilteredCategoryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void retrieveCategoryItems(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CATEGORIES).child(category);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                itemsHashMap = (HashMap<String, String>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     class SubCategoryAdapter extends BaseAdapter {

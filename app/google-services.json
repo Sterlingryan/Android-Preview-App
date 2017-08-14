@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "487456751985",
+    "firebase_url": "https://bortex-preview-app.firebaseio.com",
+    "project_id": "bortex-preview-app",
+    "storage_bucket": "bortex-preview-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487456751985:android:4876d10f2eda4b13",
+        "android_client_info": {
+          "package_name": "preview.valteck.bortexapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487456751985-fcclvojthn57je5dkfgg7vfdkbuombr8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "preview.valteck.bortexapp",
+            "certificate_hash": "28df4eaf0c6bb8a2fa8e52737d8cfbcd99dfc5f9"
+          }
+        },
+        {
+          "client_id": "487456751985-kv9e2oov2qpodeo3ohf2fp00cl14093i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNVYBHA7vXgzNB-8KyNNDmMu8kzTlvTVA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487456751985-kv9e2oov2qpodeo3ohf2fp00cl14093i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
