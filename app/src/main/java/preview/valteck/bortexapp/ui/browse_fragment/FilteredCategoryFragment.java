@@ -48,7 +48,7 @@ public class FilteredCategoryFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainActivity) getActivity()).replaceFragment(FragmentName.ITEM, null);
+                ((MainActivity) getActivity()).startItemFragment(mItemsList.get(position));
             }
         });
         return view;

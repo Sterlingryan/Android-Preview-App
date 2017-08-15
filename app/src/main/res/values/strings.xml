@@ -16,4 +16,8 @@
         <item>Jeans</item>
         <item>Underwear and Socks</item>
     </string-array>
+
+    <!-- SnackBar Messages -->
+    <string name="choose_size">Select the item\'s size</string>
+    <string name="choose_color">Select the item\'s color</string>
 </resources>

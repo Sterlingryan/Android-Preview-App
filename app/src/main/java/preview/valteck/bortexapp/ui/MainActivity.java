@@ -1,7 +1,11 @@
 package preview.valteck.bortexapp.ui;
 
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import preview.valteck.bortexapp.R;
 import preview.valteck.bortexapp.model.Item;
@@ -38,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_drawer);
 
+        // Set up views
         setUpBottomNavigationBar();
         setUpToolbar();
     }
@@ -107,41 +111,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.colorText));
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-//        );
-//
-//        if(drawer != null){
-//            drawer.addDrawerListener(toggle);
-//            toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorText));
-//        }
-//        toggle.syncState();
-    }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        );
 
-    /**
-     * Replaces the fragment in the activity, this
-     * method is accessed from within a fragment.
-     */
-    public void replaceFragment(FragmentName fragment, String category){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        switch (fragment){
-            case FILTERED_CATEGORY:
-                retrieveData(category);
-                break;
-            case ITEM:
-                ItemFragment itemFragment = new ItemFragment();
-                transaction.replace(R.id.frame_layout,itemFragment );
-                transaction.addToBackStack(FragmentName.ITEM.toString());
-                transaction.commit();
-                break;
+        if(drawer != null){
+            drawer.addDrawerListener(toggle);
+            toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorText));
         }
+        toggle.syncState();
     }
 
     /**
-     * Retrieve items from Firebase
+     * Starts FilteredCategoryFragment class
+     * with Firebase objects
      */
-    private void retrieveData(String category){
+    public void startFilteredCategoryFragment(String category){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CATEGORIES).child(category);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -161,5 +147,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    /**
+     * Starts ItemFragment with Object
+     * retrieved from ItemList
+     */
+    public void startItemFragment(Item item){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, ItemFragment.newInstance(item));
+        transaction.commit();
+    }
+
+    /**
+     * Shows a message through a
+     * snackbar
+     */
+    public void showSnackBar(int messageId){
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), getString(messageId), Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

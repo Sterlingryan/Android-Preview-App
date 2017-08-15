@@ -1,8 +1,9 @@
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:padding="16dp"
-          android:scrollbars="none"
-          android:clipToPadding="false"
-          android:divider="@android:color/transparent"
-          android:dividerHeight="22.0dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:scrollbars="none"
+            android:clipToPadding="false"
+            android:background="@color/colorPrimary"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="22.0dp"/>

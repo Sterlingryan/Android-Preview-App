@@ -8,7 +8,7 @@ public final class Constants {
 
     /* Firebase's constants */
     public static final String FIREBASE_CATEGORIES = "Category";
-    public static final String FIREBASE_ITEMS = "Items";
+    public static final String FIREBASE_ITEM = "Item";
 
     /* Category constants */
     public static final String CATEGORY_ACCESSORIES = "Accessories";

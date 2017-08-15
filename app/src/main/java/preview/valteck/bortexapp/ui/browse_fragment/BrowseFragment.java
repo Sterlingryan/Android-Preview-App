@@ -56,6 +56,7 @@ public class BrowseFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String category = null;
+                view.setEnabled(false);
                 switch (position){
                     case 0 :
                         category = Constants.CATEGORY_ACCESSORIES;
@@ -82,7 +83,7 @@ public class BrowseFragment extends Fragment{
                         category = Constants.CATEGORY_UNDERWEAR_AND_SOCKS;
                         break;
                 }
-                ((MainActivity) getActivity()).replaceFragment(FragmentName.FILTERED_CATEGORY, category);
+                ((MainActivity) getActivity()).startFilteredCategoryFragment(category);
             }
         });
         ViewCompat.setNestedScrollingEnabled(gridView,true);
@@ -137,11 +138,6 @@ public class BrowseFragment extends Fragment{
             Picasso.with(getContext()).load(mImages[position]).fit().into(viewHolder.imageView);
 
             return convertView;
-        }
-
-        private int dpToPx(int dp){
-            DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-            return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         }
     }
 
