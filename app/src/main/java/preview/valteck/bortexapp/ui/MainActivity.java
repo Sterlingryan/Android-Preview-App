@@ -2,18 +2,20 @@ package preview.valteck.bortexapp.ui;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import preview.valteck.bortexapp.R;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Toolbar mToolbar;
     public BottomNavigationBar mBottomNavigationBar;
+    public ArrayList<Item> mItemsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,15 +127,39 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (fragment){
             case FILTERED_CATEGORY:
-                transaction.replace(R.id.frame_layout, FilteredCategoryFragment.newInstance(category) );
-                transaction.addToBackStack(FragmentName.FILTERED_CATEGORY.toString());
+                retrieveData(category);
                 break;
             case ITEM:
                 ItemFragment itemFragment = new ItemFragment();
                 transaction.replace(R.id.frame_layout,itemFragment );
                 transaction.addToBackStack(FragmentName.ITEM.toString());
+                transaction.commit();
                 break;
         }
-        transaction.commit();
+    }
+
+    /**
+     * Retrieve items from Firebase
+     */
+    private void retrieveData(String category){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CATEGORIES).child(category);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    Item item = child.getValue(Item.class);
+                    mItemsList.add(item);
+                }
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, FilteredCategoryFragment.newInstance() );
+                transaction.addToBackStack(FragmentName.FILTERED_CATEGORY.toString());
+                transaction.commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -13,18 +13,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import preview.valteck.bortexapp.R;
+import preview.valteck.bortexapp.model.Item;
 import preview.valteck.bortexapp.ui.MainActivity;
-import preview.valteck.bortexapp.utility.Constants;
 
 /**
  * Created by SterlingRyan on 8/1/2017.
@@ -32,23 +27,16 @@ import preview.valteck.bortexapp.utility.Constants;
 
 public class FilteredCategoryFragment extends Fragment {
 
-    private HashMap<String, String> itemsHashMap;
-    private String category;
+    private ArrayList<Item> mItemsList;
 
-    public static Fragment newInstance(String category) {
-        FilteredCategoryFragment filteredCategoryFragment = new FilteredCategoryFragment();
-        Bundle args = new Bundle();
-        args.putString(Constants.FIREBASE_CATEGORIES, category);
-        filteredCategoryFragment.setArguments(args);
-        return filteredCategoryFragment;
+    public static Fragment newInstance() {
+        return new FilteredCategoryFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.category = savedInstanceState.getString(Constants.FIREBASE_CATEGORIES);
-        retrieveCategoryItems();
-        String hry;
+        this.mItemsList = ((MainActivity) getActivity()).mItemsList;
     }
 
     @Nullable
@@ -66,29 +54,24 @@ public class FilteredCategoryFragment extends Fragment {
         return view;
     }
 
-    private void retrieveCategoryItems(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CATEGORIES).child(category);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                itemsHashMap = (HashMap<String, String>) dataSnapshot.getValue();
-            }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mItemsList.clear();
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    static class ViewHolder{
+        TextView itemPrice;
+        TextView itemTitle;
+        ImageView itemImage;
+        ImageView favouriteImage;
     }
 
     class SubCategoryAdapter extends BaseAdapter {
 
-        private String[] mItemTitles;
-        private String[] mImages;
-
         @Override
         public int getCount() {
-            return mItemTitles.length;
+            return mItemsList.size();
         }
 
         @Override
@@ -98,26 +81,36 @@ public class FilteredCategoryFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ViewHolder viewHolder;
 
-            View itemView;
             if(convertView == null){
-                itemView = inflater.inflate(R.layout.clothes_subcategory_item, null);
-                TextView itemPrice = (TextView) itemView.findViewById(R.id.item_price_text_view);
-                TextView itemTitle = (TextView) itemView.findViewById(R.id.item_name_text_view);
-                ImageView itemImage = (ImageView) itemView.findViewById(R.id.item_image_view);
-                Picasso.with(getContext()).load(R.drawable.acessories_v1).fit().into(itemImage);
-                ImageView favouriteImage = (ImageView) itemView.findViewById(R.id.favourite_icon);
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.clothes_subcategory_item, null);
+
+                // Retrieve the children views
+                viewHolder = new ViewHolder();
+                viewHolder.itemPrice = (TextView) convertView.findViewById(R.id.item_price_text_view);
+                viewHolder.itemTitle = (TextView) convertView.findViewById(R.id.item_name_text_view);
+                viewHolder.itemImage = (ImageView) convertView.findViewById(R.id.item_image_view);
+                viewHolder.favouriteImage = (ImageView) convertView.findViewById(R.id.favourite_icon);
+
+                convertView.setTag(viewHolder);
             }
             else {
-                itemView = convertView;
+                viewHolder = (ViewHolder) convertView.getTag();
             }
-            return itemView;
+
+            // Populate views with data
+            viewHolder.itemPrice.setText(mItemsList.get(position).getPrice());
+            viewHolder.itemTitle.setText(mItemsList.get(position).getName());
+            Picasso.with(getContext()).load(mItemsList.get(position).getImageURL()).fit().into(viewHolder.itemImage);
+
+            return convertView;
         }
     }
 

@@ -19,7 +19,7 @@ app:cardCornerRadius="0dp">
         <ImageView
                 android:id="@+id/item_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="200dp"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@ app:cardCornerRadius="0dp">
                         android:text="69.99€"
                         android:textColor="@color/colorText"
                         android:textStyle="bold"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"/>
 
@@ -53,8 +53,8 @@ app:cardCornerRadius="0dp">
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_centerVertical="true"
                         android:layout_alignTop="@id/item_price_text_view"
+                        android:layout_alignBottom="@+id/item_price_text_view"
                         android:layout_alignParentEnd="true"/>
 
             </RelativeLayout>
@@ -62,7 +62,7 @@ app:cardCornerRadius="0dp">
             <TextView
                     android:id="@+id/item_name_text_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:paddingBottom="8dp"
                     android:paddingEnd="8dp"
                     android:paddingStart="8dp"

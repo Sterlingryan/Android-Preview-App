@@ -18,6 +18,8 @@ import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import preview.valteck.bortexapp.R;
 
 /**
