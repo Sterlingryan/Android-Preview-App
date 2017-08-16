@@ -1,16 +1,13 @@
 package preview.valteck.bortexapp.ui.browse_fragment;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -90,7 +87,7 @@ public class BrowseFragment extends Fragment{
         return gridView;
     }
 
-    static class ViewHolderItem{
+    private static class ViewHolder {
         TextView textView;
         ImageView imageView;
     }
@@ -114,7 +111,7 @@ public class BrowseFragment extends Fragment{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolderItem viewHolder;
+            ViewHolder viewHolder;
 
             if(convertView == null){
                 // Inflate the layout
@@ -122,7 +119,7 @@ public class BrowseFragment extends Fragment{
                 convertView = inflater.inflate(R.layout.clothes_category_item, null);
 
                 // Set up the View Holder
-                viewHolder = new ViewHolderItem();
+                viewHolder = new ViewHolder();
                 viewHolder.textView = (TextView) convertView.findViewById(R.id.textView);
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
@@ -130,7 +127,7 @@ public class BrowseFragment extends Fragment{
                 convertView.setTag(viewHolder);
             }
             else {
-                viewHolder = (ViewHolderItem) convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
             // Assign values according to position

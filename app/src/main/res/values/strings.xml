@@ -4,6 +4,8 @@
     <!-- UI Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="pay_now_button">Pay Securely Now</string>
+    <string name="euro_symbol">€</string>
 
     <!-- Categories Strings-->
     <string-array name="categories">
@@ -17,7 +19,8 @@
         <item>Underwear and Socks</item>
     </string-array>
 
-    <!-- SnackBar Messages -->
+    <!-- Snack bar messages -->
     <string name="choose_size">Select the item\'s size</string>
     <string name="choose_color">Select the item\'s color</string>
+    <string name="added_to_cart_success">Item added to cart</string>
 </resources>

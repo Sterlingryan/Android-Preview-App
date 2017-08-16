@@ -10,6 +10,7 @@
                 android:paddingRight="16dp"
                 android:paddingLeft="16dp"
                 android:paddingBottom="100dp"
+                android:paddingTop="8dp"
                 android:scrollbars="none"
                 android:clipToPadding="false"
                 android:divider="@color/colorPrimaryDark"

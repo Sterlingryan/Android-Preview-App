@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 import preview.valteck.bortexapp.R;
+import preview.valteck.bortexapp.model.CartItem;
 import preview.valteck.bortexapp.model.Item;
 import preview.valteck.bortexapp.ui.MainActivity;
 import preview.valteck.bortexapp.utility.Constants;
@@ -90,7 +91,7 @@ public class ItemFragment extends Fragment {
         sizeSpinner.setAdapter(adapterSize);
         colorSpinner.setAdapter(adapterColor);
         titleTextView.setText(mItem.getName());
-        priceTextView.setText(mItem.getPrice());
+        priceTextView.setText("€" + mItem.getPrice());
 
         // Set views functionality
         backImage.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +114,16 @@ public class ItemFragment extends Fragment {
                 else{
                     v.setBackgroundColor(getResources().getColor(R.color.colorText));
                     v.setEnabled(false);
-                    // TODO add Add to Cart Functionality
+                    CartItem cartItem = new CartItem(mItem.getItemId(),
+                                                mItem.getName(),
+                                                mItem.getImageURL(),
+                                                colorSpinner.getSelectedItem().toString(),
+                                                sizeSpinner.getSelectedItem().toString(),
+                                                mItem.getDescription(),
+                                                mItem.getPrice(),
+                                                mItem.getItemType());
+                    mainActivity.showSnackBar(R.string.added_to_cart_success);
+                    mainActivity.mCartList.add(cartItem);
                 }
             }
         });

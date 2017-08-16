@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import preview.valteck.bortexapp.R;
+import preview.valteck.bortexapp.model.CartItem;
 import preview.valteck.bortexapp.model.Item;
 import preview.valteck.bortexapp.ui.browse_fragment.BrowseFragment;
 import preview.valteck.bortexapp.ui.browse_fragment.FilteredCategoryFragment;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar mToolbar;
     public BottomNavigationBar mBottomNavigationBar;
     public ArrayList<Item> mItemsList = new ArrayList<>();
+    public ArrayList<CartItem> mCartList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
         // Set up views
         setUpBottomNavigationBar();
         setUpToolbar();
+    }
+
+    /**
+     * Set toolbar to visible
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(mToolbar.getVisibility() == View.GONE){
+            mToolbar.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setUpBottomNavigationBar(){

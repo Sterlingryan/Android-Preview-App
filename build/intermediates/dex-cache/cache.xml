@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\ryana\Documents\GitHub\Android-Preview-App\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="da11bcd31d6f83996f4fd3945b787e94517f8a69">
-        <dex dex="C:\Users\ryana\Documents\GitHub\Android-Preview-App\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_2fdc69f3ca25e13e3ed9381e11ad303dd4411e47\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\ryana\Documents\GitHub\Android-Preview-App\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\SterlingRyan\Documents\GitHub\Android-Preview-App\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\ryana\Documents\GitHub\Android-Preview-App\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_ec45f078261b058f17dfbd47208f7188a442b078\classes.dex" />
+        <dex dex="C:\Users\SterlingRyan\Documents\GitHub\Android-Preview-App\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_ecf8e055b27c5afbd4d7f23b858a57f76801ec1c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\SterlingRyan\Documents\GitHub\Android-Preview-App\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="0457f514700425dfe17f782d79ec2ffb837f3db2">
+        <dex dex="C:\Users\SterlingRyan\Documents\GitHub\Android-Preview-App\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_63ea99304a18a9b6e6c2f6bcc490c22260035fb7\classes.dex" />
     </item>
 
 </items>
