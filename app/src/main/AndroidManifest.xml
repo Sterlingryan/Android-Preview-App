@@ -16,7 +16,11 @@
                    android:value="@string/facebook_app_id"/>
 
         <activity android:name=".ui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".ui.login_and_registration_activities.RegisterActivity">
@@ -24,11 +28,7 @@
         </activity>
 
         <activity android:name=".ui.login_and_registration_activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
     </application>
 

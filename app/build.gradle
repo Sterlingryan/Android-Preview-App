@@ -59,6 +59,11 @@ dependencies {
 
     // Facebook single sign in
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    // Material Drawer Dependency
+    compile('com.mikepenz:materialdrawer:5.9.0') {
+        transitive = true
+    }
 }
 // Firebase plugin
 apply plugin: 'com.google.gms.google-services'

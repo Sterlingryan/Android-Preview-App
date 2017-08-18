@@ -1,5 +1,7 @@
 package preview.valteck.bortexapp.ui;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +20,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 
@@ -30,6 +43,7 @@ import preview.valteck.bortexapp.ui.browse_fragment.FragmentName;
 import preview.valteck.bortexapp.ui.browse_fragment.ItemFragment;
 import preview.valteck.bortexapp.ui.favourites_fragment.FavouritesFragment;
 import preview.valteck.bortexapp.ui.home_fragment.HomeFragment;
+import preview.valteck.bortexapp.ui.login_and_registration_activities.LoginActivity;
 import preview.valteck.bortexapp.ui.shopping_cart_fragment.ShoppingCartFragment;
 import preview.valteck.bortexapp.utility.Constants;
 
@@ -39,15 +53,17 @@ public class MainActivity extends AppCompatActivity {
     public BottomNavigationBar mBottomNavigationBar;
     public ArrayList<Item> mItemsList = new ArrayList<>();
     public ArrayList<CartItem> mCartList = new ArrayList<>();
+    private Drawer mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_drawer);
+        setContentView(R.layout.activity_main);
 
         // Set up views
         setUpBottomNavigationBar();
         setUpToolbar();
+        setUpDrawer();
     }
 
     /**
@@ -123,17 +139,50 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.colorText));
+    }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        );
+    /**
+     * Setup Material drawer
+     */
+    private void setUpDrawer(){
+        new DrawerBuilder().withActivity(this).build();
 
-        if(drawer != null){
-            drawer.addDrawerListener(toggle);
-            toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorText));
-        }
-        toggle.syncState();
+        // Create drawer object
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .withRootView(R.id.drawer_frame_layout)
+                .withDisplayBelowStatusBar(false)
+                .withTranslucentStatusBar(false)
+                .withActionBarDrawerToggleAnimated(true)
+                .withSliderBackgroundColorRes(R.color.colorText)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withIdentifier(0).withName("Home").withTextColorRes(R.color.colorText),
+                        new SectionDrawerItem(),
+                        new SecondaryDrawerItem().withIdentifier(1).withName("Sign In").withTextColorRes(R.color.colorText),
+                        new SecondaryDrawerItem().withIdentifier(2).withName("My Points").withTextColorRes(R.color.colorText).withBadge("0").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.colorAccent)).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(3).withName("My Orders").withTextColorRes(R.color.colorText).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(4).withName("My Details").withTextColorRes(R.color.colorText).withSelectable(false)
+                )
+                .withSliderBackgroundColorRes(R.color.colorPrimary)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Intent intent = null;
+                        if (drawerItem != null){
+                            if(drawerItem.getIdentifier() == 0){
+                                mDrawer.closeDrawer();
+                            }
+                            else if(drawerItem.getIdentifier() == 1){
+                                mDrawer.closeDrawer();
+                                intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                        return true;
+                    }
+                })
+                .build();
     }
 
     /**
