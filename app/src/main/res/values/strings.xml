@@ -23,4 +23,27 @@
     <string name="choose_size">Select the item\'s size</string>
     <string name="choose_color">Select the item\'s color</string>
     <string name="added_to_cart_success">Item added to cart</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_register_short">Register</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="facebook_app_id">269239000231155</string>
+    <string name="fb_login_protocol_scheme">fb269239000231155</string>
+
+    <!-- Login Errors-->
+    <string name="sign_in_cancelled">Sign in was cancelled</string>
+    <string name="no_internet_connection">Unable to connect</string>
+    <string name="unknown_error">Could not sign in, unknown error</string>
+    <string name="unknown_sign_in_response">unknown sign in response</string>
+
+    <!-- Strings related to registration -->
+    <string name="email_hint" translation_description="Hint in email input field">Email</string>
 </resources>
