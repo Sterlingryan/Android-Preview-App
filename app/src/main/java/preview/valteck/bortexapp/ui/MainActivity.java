@@ -2,19 +2,23 @@ package preview.valteck.bortexapp.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,12 +29,12 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -52,8 +56,11 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar mToolbar;
     public BottomNavigationBar mBottomNavigationBar;
     public ArrayList<Item> mItemsList = new ArrayList<>();
+    public ArrayList<Item> mFavouriteItemsList = new ArrayList<>();
     public ArrayList<CartItem> mCartList = new ArrayList<>();
     private Drawer mDrawer;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
         // Set up views
         setUpBottomNavigationBar();
         setUpToolbar();
-        setUpDrawer();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        mAuth = FirebaseAuth.getInstance();
+        new DrawerBuilder().withActivity(this).build();
+
     }
 
     /**
@@ -74,6 +85,27 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         if(mToolbar.getVisibility() == View.GONE){
             mToolbar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(mUser != null){
+            setUpSignedInDrawer();
+        } else {
+            setUpAnonymousDrawer();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mUser != null){
+            setUpSignedInDrawer();
+        } else {
+            setUpAnonymousDrawer();
         }
     }
 
@@ -142,12 +174,74 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Setup Material drawer
+     * Set up anonymous user drawer
      */
-    private void setUpDrawer(){
-        new DrawerBuilder().withActivity(this).build();
-
+    private void setUpAnonymousDrawer(){
+        mDrawer = null;
         // Create drawer object
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .withRootView(R.id.drawer_frame_layout)
+                .withActionBarDrawerToggleAnimated(true)
+                .withDisplayBelowStatusBar(false)
+                .withTranslucentStatusBar(false)
+                .withSliderBackgroundColorRes(R.color.colorText)
+                .addDrawerItems(
+                        new SecondaryDrawerItem().withIdentifier(1).withName("Sign In").withTextColorRes(R.color.colorText).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(2).withName("My Points").withTextColorRes(R.color.colorText).withBadge("0").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.colorAccent)).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(3).withName("My Orders").withTextColorRes(R.color.colorText).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(4).withName("My Details").withTextColorRes(R.color.colorText).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(5).withName("About").withTextColorRes(R.color.colorText).withSelectable(false)
+                )
+                .withSliderBackgroundColorRes(R.color.colorPrimary)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Intent intent;
+                        if (drawerItem != null){
+                            if(drawerItem.getIdentifier() == 0){
+                                mDrawer.closeDrawer();
+                            }
+                            else if(drawerItem.getIdentifier() == 1){
+                                intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                        return true;
+                    }
+                })
+                .build();
+    }
+
+    /**
+     * Set up a signed in user drawer
+     */
+    private void setUpSignedInDrawer(){
+        mDrawer = null;
+
+        // Lets material drawer load images
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
+
+        // Create header
+        AccountHeader header = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.color.colorPrimary)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(mUser.getDisplayName()).withEmail(mUser.getEmail()).withIcon(mUser.getPhotoUrl())
+                )
+                .build();
+
         mDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
@@ -156,27 +250,23 @@ public class MainActivity extends AppCompatActivity {
                 .withTranslucentStatusBar(false)
                 .withActionBarDrawerToggleAnimated(true)
                 .withSliderBackgroundColorRes(R.color.colorText)
+                .withAccountHeader(header)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withIdentifier(0).withName("Home").withTextColorRes(R.color.colorText),
-                        new SectionDrawerItem(),
-                        new SecondaryDrawerItem().withIdentifier(1).withName("Sign In").withTextColorRes(R.color.colorText),
-                        new SecondaryDrawerItem().withIdentifier(2).withName("My Points").withTextColorRes(R.color.colorText).withBadge("0").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.colorAccent)).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(2).withName("My Points").withTextColorRes(R.color.colorText).withBadge("2000").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.colorAccent)).withSelectable(false),
                         new SecondaryDrawerItem().withIdentifier(3).withName("My Orders").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(4).withName("My Details").withTextColorRes(R.color.colorText).withSelectable(false)
+                        new SecondaryDrawerItem().withIdentifier(4).withName("My Details").withTextColorRes(R.color.colorText).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(5).withName("About").withTextColorRes(R.color.colorText).withSelectable(false),
+                        new SecondaryDrawerItem().withIdentifier(6).withName("Sign Out").withTextColorRes(R.color.colorText).withSelectable(false)
                 )
                 .withSliderBackgroundColorRes(R.color.colorPrimary)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Intent intent = null;
                         if (drawerItem != null){
-                            if(drawerItem.getIdentifier() == 0){
+                            if(drawerItem.getIdentifier() == 6){
+                                mAuth.signOut();
                                 mDrawer.closeDrawer();
-                            }
-                            else if(drawerItem.getIdentifier() == 1){
-                                mDrawer.closeDrawer();
-                                intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
+                                setUpAnonymousDrawer();
                             }
                         }
                         return true;
@@ -226,7 +316,6 @@ public class MainActivity extends AppCompatActivity {
      * snackbar
      */
     public void showSnackBar(int messageId){
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), getString(messageId), Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        Toast.makeText(this, getString(messageId), Toast.LENGTH_SHORT).show();
     }
 }

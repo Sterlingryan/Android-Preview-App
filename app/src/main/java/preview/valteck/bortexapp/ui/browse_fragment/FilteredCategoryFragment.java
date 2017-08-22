@@ -28,6 +28,7 @@ import preview.valteck.bortexapp.ui.MainActivity;
 public class FilteredCategoryFragment extends Fragment {
 
     private ArrayList<Item> mItemsList;
+    private ArrayList<Item> mFavouriteItemsList;
 
     public static Fragment newInstance() {
         return new FilteredCategoryFragment();
@@ -37,6 +38,7 @@ public class FilteredCategoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.mItemsList = ((MainActivity) getActivity()).mItemsList;
+        this.mFavouriteItemsList = ((MainActivity) getActivity()).mFavouriteItemsList;
     }
 
     @Nullable
@@ -85,7 +87,7 @@ public class FilteredCategoryFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
 
             if(convertView == null){
@@ -109,6 +111,29 @@ public class FilteredCategoryFragment extends Fragment {
             viewHolder.itemPrice.setText(mItemsList.get(position).getPrice());
             viewHolder.itemTitle.setText(mItemsList.get(position).getName());
             Picasso.with(getContext()).load(mItemsList.get(position).getImageURL()).fit().into(viewHolder.itemImage);
+
+            if(((MainActivity) getActivity()).mFavouriteItemsList.contains(mItemsList.get(position))){
+                viewHolder.favouriteImage.setImageResource(R.drawable.ic_favorite_24dp);
+                viewHolder.favouriteImage.setTag(R.drawable.ic_favorite_24dp);
+            } else {
+                viewHolder.favouriteImage.setTag(R.drawable.ic_favorite_border_black_24dp);
+            }
+
+            // set views functionality
+            viewHolder.favouriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if ((Integer) v.getTag() == R.drawable.ic_favorite_border_black_24dp){
+                        ((ImageView) v).setImageResource(R.drawable.ic_favorite_24dp);
+                        v.setTag(R.drawable.ic_favorite_24dp);
+                        ((MainActivity) getActivity()).mFavouriteItemsList.add(mItemsList.get(position));
+                    } else {
+                        ((ImageView) v).setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                        v.setTag(R.drawable.ic_favorite_border_black_24dp);
+                        ((MainActivity) getActivity()).mFavouriteItemsList.remove(mItemsList.get(position));
+                    }
+                }
+            });
 
             return convertView;
         }

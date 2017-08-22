@@ -6,11 +6,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText nameAndSurnameEditText = (EditText) findViewById(R.id.name);
         final EditText passwordEditText = (EditText) findViewById(R.id.password);
         Button registerButton = (Button) findViewById(R.id.button_register);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 
         //set view functionality
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +58,19 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorText), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void registerWithEmailAndPassword(String email, String password){

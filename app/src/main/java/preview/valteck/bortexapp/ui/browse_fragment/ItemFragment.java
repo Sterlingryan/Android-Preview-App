@@ -74,6 +74,7 @@ public class ItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item, container, false);
         ImageView itemImage = (ImageView) view.findViewById(R.id.item_image_view);
         ImageView backImage = (ImageView) view.findViewById(R.id.back_arrow_image_view);
+        ImageView favouriteImage = (ImageView) view.findViewById(R.id.favourite_button);
         final MaterialSpinner colorSpinner = (MaterialSpinner ) view.findViewById(R.id.spinner_color);
         final MaterialSpinner  sizeSpinner = (MaterialSpinner ) view.findViewById(R.id.spinner_size);
         Button addToCartButton = (Button) view.findViewById(R.id.add_to_cart_button);
@@ -92,6 +93,11 @@ public class ItemFragment extends Fragment {
         colorSpinner.setAdapter(adapterColor);
         titleTextView.setText(mItem.getName());
         priceTextView.setText("€" + mItem.getPrice());
+        favouriteImage.setTag(R.drawable.ic_favorite_border_black_24dp);
+        if(((MainActivity) getActivity()).mFavouriteItemsList.contains(mItem)){
+            favouriteImage.setImageResource(R.drawable.ic_favorite_24dp);
+            favouriteImage.setTag(R.drawable.ic_favorite_24dp);
+        }
 
         // Set views functionality
         backImage.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +130,21 @@ public class ItemFragment extends Fragment {
                                                 mItem.getItemType());
                     mainActivity.showSnackBar(R.string.added_to_cart_success);
                     mainActivity.mCartList.add(cartItem);
+                }
+            }
+        });
+
+        favouriteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ((Integer) v.getTag() == R.drawable.ic_favorite_border_black_24dp){
+                    ((ImageView) v).setImageResource(R.drawable.ic_favorite_24dp);
+                    v.setTag(R.drawable.ic_favorite_24dp);
+                    ((MainActivity) getActivity()).mFavouriteItemsList.add(mItem);
+                } else {
+                    ((ImageView) v).setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    v.setTag(R.drawable.ic_favorite_border_black_24dp);
+                    ((MainActivity) getActivity()).mFavouriteItemsList.remove(mItem);
                 }
             }
         });

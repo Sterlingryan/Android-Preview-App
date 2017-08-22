@@ -10,6 +10,7 @@ public final class Constants {
     public static final String FIREBASE_CATEGORIES = "Category";
     public static final String FIREBASE_ITEM = "Item";
     public static final String FIREBASE_CART_ITEM = "Cart Item";
+    public static final String FIREBASE_ALL_ITEMS = "All Items";
 
     /* Category constants */
     public static final String CATEGORY_ACCESSORIES = "Accessories";

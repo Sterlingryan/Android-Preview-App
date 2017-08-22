@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!--<item name="android:actionBarStyle">@style/ActionBarStyle</item>-->
+        <!--<item name="android:actionBarTheme">@style/ActionBarTheme</item>-->
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -17,5 +19,15 @@
         <item name="spinBars">true</item>
         <item name="color">@color/colorText</item>
     </style>
+
+    <!--<style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">-->
+        <!--<item name="android:textColor">@color/colorText</item>-->
+        <!--<item name="android:color">@color/colorText</item>-->
+        <!--<item name="android:colorControlNormal">@color/colorText</item>-->
+    <!--</style>-->
+
+    <!--<style name="ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">-->
+        <!--<item name="colorControlNormal">@color/colorText</item>-->
+    <!--</style>-->
 
 </resources>

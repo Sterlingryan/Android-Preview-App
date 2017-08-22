@@ -17,11 +17,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -85,6 +88,7 @@ public class LoginActivity extends AppCompatActivity{
         Button registerButton = (Button) findViewById(R.id.register_button);
         SignInButton googleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         LoginButton facebookSignInButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 
         // Set views functionality
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +138,13 @@ public class LoginActivity extends AppCompatActivity{
                 showSnackBar("Error signing in " + error.getMessage());
             }
         });
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorText), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     @Override
@@ -155,6 +166,12 @@ public class LoginActivity extends AppCompatActivity{
             // Pass the result to Facebook SDK
             mCallBackManager.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     /**
