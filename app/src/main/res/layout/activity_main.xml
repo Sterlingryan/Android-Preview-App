@@ -20,15 +20,22 @@
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <!--android:theme="@style/AppTheme.AppBarOverlay"-->
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-        <!--app:popupTheme="@style/AppTheme.PopupOverlay"-->
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <TextView
+                    android:id="@+id/appBarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textSize="28sp"
+                    android:textColor="@color/colorText"/>
+                </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -41,7 +48,7 @@
                     android:id="@+id/activity_main"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimary">
+                    android:background="@color/colorPrimaryBackground">
 
                 <FrameLayout
                         android:id="@+id/frame_layout"

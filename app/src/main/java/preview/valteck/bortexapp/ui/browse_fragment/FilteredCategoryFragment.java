@@ -1,6 +1,7 @@
 package preview.valteck.bortexapp.ui.browse_fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ public class FilteredCategoryFragment extends Fragment {
 
     private ArrayList<Item> mItemsList;
     private ArrayList<Item> mFavouriteItemsList;
+    private Typeface mRalewayFontLight;
+    private Typeface mRalewayFontSemiBold;
 
     public static Fragment newInstance() {
         return new FilteredCategoryFragment();
@@ -39,6 +42,8 @@ public class FilteredCategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.mItemsList = ((MainActivity) getActivity()).mItemsList;
         this.mFavouriteItemsList = ((MainActivity) getActivity()).mFavouriteItemsList;
+        this.mRalewayFontLight = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Light.ttf");
+        this.mRalewayFontSemiBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-SemiBold.ttf");
     }
 
     @Nullable
@@ -108,8 +113,10 @@ public class FilteredCategoryFragment extends Fragment {
             }
 
             // Populate views with data
-            viewHolder.itemPrice.setText(mItemsList.get(position).getPrice());
+            viewHolder.itemPrice.setText("€" + mItemsList.get(position).getPrice());
+            viewHolder.itemPrice.setTypeface(mRalewayFontSemiBold);
             viewHolder.itemTitle.setText(mItemsList.get(position).getName());
+            viewHolder.itemTitle.setTypeface(mRalewayFontLight);
             Picasso.with(getContext()).load(mItemsList.get(position).getImageURL()).fit().into(viewHolder.itemImage);
 
             if(((MainActivity) getActivity()).mFavouriteItemsList.contains(mItemsList.get(position))){

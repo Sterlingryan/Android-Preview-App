@@ -4,6 +4,6 @@
             android:padding="16dp"
             android:scrollbars="none"
             android:clipToPadding="false"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryBackground"
             android:divider="@android:color/transparent"
             android:dividerHeight="22.0dp"/>

@@ -30,7 +30,7 @@
                     android:id="@+id/back_arrow_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:padding="16dp"
                     android:src="@drawable/ic_keyboard_backspace_24dp"/>
             </FrameLayout>
 
@@ -65,8 +65,8 @@
 
                     <ImageView
                         android:id="@+id/favourite_button"
-                        android:layout_width="34sp"
-                        android:layout_height="34sp"
+                        android:layout_width="40sp"
+                        android:layout_height="40sp"
                         android:layout_marginLeft="8dp"
                         android:src="@drawable/ic_favorite_border_black_24dp"
                         android:layout_centerVertical="true"
@@ -140,8 +140,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="Add to cart"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@color/colorActiveButton"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="0.23"/>
 

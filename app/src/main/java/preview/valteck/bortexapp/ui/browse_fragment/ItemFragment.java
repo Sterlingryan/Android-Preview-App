@@ -1,26 +1,18 @@
 package preview.valteck.bortexapp.ui.browse_fragment;
 
-import android.app.Activity;
-import android.media.Image;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -39,6 +31,8 @@ public class ItemFragment extends Fragment {
 
     private Item mItem;
     private MainActivity mainActivity;
+    private Typeface mTypeFaceTitle;
+    private Typeface mTypeFacePrice;
 
     /**
      * Create a new ItemFragment object
@@ -63,7 +57,9 @@ public class ItemFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.mItem = (Item) getArguments().getSerializable(Constants.FIREBASE_ITEM);
-        mainActivity = (MainActivity) getActivity();
+        this.mainActivity = (MainActivity) getActivity();
+        this.mTypeFaceTitle = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
+        this.mTypeFacePrice = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Bold.ttf");
     }
 
     @Nullable
@@ -81,7 +77,7 @@ public class ItemFragment extends Fragment {
         TextView titleTextView = (TextView) view.findViewById(R.id.title_text_view);
         TextView priceTextView = (TextView) view.findViewById(R.id.item_price_text_view);
 
-        // Load views with data
+        // Load views with data and design
         Picasso.with(this.getContext()).load(mItem.getImageURL()).fit().into(itemImage);
         ArrayList<String> coloursList = new ArrayList<>(mItem.getColours().values());
         ArrayList<String> sizesList = new ArrayList<>(mItem.getSize().values());
@@ -92,12 +88,15 @@ public class ItemFragment extends Fragment {
         sizeSpinner.setAdapter(adapterSize);
         colorSpinner.setAdapter(adapterColor);
         titleTextView.setText(mItem.getName());
+        titleTextView.setTypeface(mTypeFaceTitle);
         priceTextView.setText("€" + mItem.getPrice());
+        priceTextView.setTypeface(mTypeFacePrice);
         favouriteImage.setTag(R.drawable.ic_favorite_border_black_24dp);
         if(((MainActivity) getActivity()).mFavouriteItemsList.contains(mItem)){
             favouriteImage.setImageResource(R.drawable.ic_favorite_24dp);
             favouriteImage.setTag(R.drawable.ic_favorite_24dp);
         }
+        addToCartButton.setTypeface(mTypeFacePrice);
 
         // Set views functionality
         backImage.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +117,7 @@ public class ItemFragment extends Fragment {
                     mainActivity.showSnackBar(R.string.choose_color);
                 }
                 else{
-                    v.setBackgroundColor(getResources().getColor(R.color.colorText));
+                    v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     v.setEnabled(false);
                     CartItem cartItem = new CartItem(mItem.getItemId(),
                                                 mItem.getName(),

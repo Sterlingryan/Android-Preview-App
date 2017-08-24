@@ -13,5 +13,5 @@
           android:clipToPadding="false"
           android:scrollbars="none"
           android:horizontalSpacing="16dp"
-          android:verticalSpacing="16dp"
-          android:background="@color/colorPrimary"/>
+          android:verticalSpacing="22dp"
+          android:background="@color/colorPrimaryBackground"/>

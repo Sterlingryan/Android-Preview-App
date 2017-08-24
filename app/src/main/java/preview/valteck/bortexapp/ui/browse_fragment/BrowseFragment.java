@@ -88,7 +88,6 @@ public class BrowseFragment extends Fragment{
     }
 
     private static class ViewHolder {
-        TextView textView;
         ImageView imageView;
     }
 
@@ -120,7 +119,6 @@ public class BrowseFragment extends Fragment{
 
                 // Set up the View Holder
                 viewHolder = new ViewHolder();
-                viewHolder.textView = (TextView) convertView.findViewById(R.id.textView);
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
                 // store the view holder with the view
@@ -131,7 +129,6 @@ public class BrowseFragment extends Fragment{
             }
 
             // Assign values according to position
-            viewHolder.textView.setText(mTitles[position]);
             Picasso.with(getContext()).load(mImages[position]).fit().into(viewHolder.imageView);
 
             return convertView;

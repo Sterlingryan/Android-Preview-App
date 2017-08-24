@@ -2,6 +2,7 @@ package preview.valteck.bortexapp.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private Drawer mDrawer;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser = null;
+    private Typeface railwayFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 .setMode(BottomNavigationBar.MODE_FIXED_NO_TITLE)
                 .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
                 .setActiveColor(R.color.colorAccent)
-                .setInActiveColor(R.color.colorText)
-                .setBarBackgroundColor(R.color.colorPrimaryDark)
+                .setInActiveColor(R.color.colorPrimaryDark)
+                .setBarBackgroundColor(R.color.colorPrimary)
                 .initialise();
 
         mBottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
@@ -170,7 +173,10 @@ public class MainActivity extends AppCompatActivity {
     private void setUpToolbar(){
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        mToolbar.setTitleTextColor(getResources().getColor(R.color.colorText));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView appTitle = (TextView) findViewById(R.id.appBarTitle);
+        railwayFont = Typeface.createFromAsset(getAssets(), "fonts/Raleway-SemiBold.ttf");
+        appTitle.setTypeface(railwayFont);
     }
 
     /**

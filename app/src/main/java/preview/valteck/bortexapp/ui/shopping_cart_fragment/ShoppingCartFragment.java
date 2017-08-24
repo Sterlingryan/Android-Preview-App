@@ -61,11 +61,18 @@ public class ShoppingCartFragment extends Fragment {
      * and show it on the button
      */
     private void calculateTotalPrice(){
-        double totalPrice = 0.0;
-        for (CartItem cartItem: mCartItemList) {
-            totalPrice += Double.parseDouble(cartItem.getPrice());
+        if(!mCartItemList.isEmpty()){
+            double totalPrice = 0.0;
+            for (CartItem cartItem: mCartItemList) {
+                totalPrice += Double.parseDouble(cartItem.getPrice());
+            }
+            mPayNowButton.setVisibility(View.VISIBLE);
+            mPayNowButton.setText(getString(R.string.pay_now_button) + " (€" + totalPrice + ")");
         }
-        mPayNowButton.setText(getString(R.string.pay_now_button) + " (€" + totalPrice + ")");
+        else {
+            mPayNowButton.setVisibility(View.GONE);
+        }
+
     }
 
     private static class ViewHolder{
