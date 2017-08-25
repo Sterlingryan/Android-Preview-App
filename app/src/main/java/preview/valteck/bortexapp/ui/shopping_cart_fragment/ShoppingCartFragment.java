@@ -1,6 +1,7 @@
 package preview.valteck.bortexapp.ui.shopping_cart_fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,8 @@ public class ShoppingCartFragment extends Fragment {
     private ArrayList<CartItem> mCartItemList;
     private ShoppingCartListAdapter mShoppingCartListAdapter;
     private Button mPayNowButton;
+    private Typeface mTextTypeface;
+    private Typeface mPriceTypeface;
 
     public static Fragment newInstance() {
         return new ShoppingCartFragment();
@@ -38,8 +41,10 @@ public class ShoppingCartFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCartItemList = ((MainActivity) getActivity()).mCartList;
-        mShoppingCartListAdapter = new ShoppingCartListAdapter();
+        this.mCartItemList = ((MainActivity) getActivity()).mCartList;
+        this.mShoppingCartListAdapter = new ShoppingCartListAdapter();
+        this.mTextTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
+        this.mPriceTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Bold.ttf");
     }
 
     @Nullable
@@ -130,6 +135,11 @@ public class ShoppingCartFragment extends Fragment {
             viewHolder.itemPrice.setText("€" + cartItem.getPrice());
             viewHolder.itemDetails.setText("Qty: 1/ " + cartItem.getColour() + "/ " + cartItem.getSize());
             Picasso.with(getContext()).load(cartItem.getImageURL()).fit().into(viewHolder.itemImage);
+
+            // Assign design characteristics to the views
+            viewHolder.itemTitle.setTypeface(mTextTypeface);
+            viewHolder.itemDetails.setTypeface(mTextTypeface);
+            viewHolder.itemPrice.setTypeface(mPriceTypeface);
 
             // Assign functionality to views
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {

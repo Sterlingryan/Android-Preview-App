@@ -5,12 +5,21 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import com.facebook.login.LoginManager;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -38,6 +49,8 @@ import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import java.util.ArrayList;
 
 import preview.valteck.bortexapp.R;
@@ -47,20 +60,23 @@ import preview.valteck.bortexapp.ui.browse_fragment.BrowseFragment;
 import preview.valteck.bortexapp.ui.browse_fragment.FilteredCategoryFragment;
 import preview.valteck.bortexapp.ui.browse_fragment.FragmentName;
 import preview.valteck.bortexapp.ui.browse_fragment.ItemFragment;
+import preview.valteck.bortexapp.ui.drawer_utility.CustomTypefaceSpan;
 import preview.valteck.bortexapp.ui.favourites_fragment.FavouritesFragment;
 import preview.valteck.bortexapp.ui.home_fragment.HomeFragment;
 import preview.valteck.bortexapp.ui.login_and_registration_activities.LoginActivity;
 import preview.valteck.bortexapp.ui.shopping_cart_fragment.ShoppingCartFragment;
 import preview.valteck.bortexapp.utility.Constants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public Toolbar mToolbar;
     public BottomNavigationBar mBottomNavigationBar;
     public ArrayList<Item> mItemsList = new ArrayList<>();
     public ArrayList<Item> mFavouriteItemsList = new ArrayList<>();
     public ArrayList<CartItem> mCartList = new ArrayList<>();
-    private Drawer mDrawer;
+    private DrawerLayout mDrawer;
+    private NavigationView mNavigationView;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser = null;
     private Typeface railwayFont;
@@ -68,16 +84,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_drawer);
 
         // Set up views
         setUpBottomNavigationBar();
         setUpToolbar();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        setUpDrawer();
 
         mAuth = FirebaseAuth.getInstance();
-        new DrawerBuilder().withActivity(this).build();
-
     }
 
     /**
@@ -110,6 +124,26 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setUpAnonymousDrawer();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_sign_in:
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_sign_out:
+                mAuth.signOut();
+                LoginManager.getInstance().logOut();
+                mDrawer.closeDrawers();
+                setUpAnonymousDrawer();
+                return false;
+            default:
+                mDrawer.closeDrawers();
+                break;
+        }
+        return true;
     }
 
     private void setUpBottomNavigationBar(){
@@ -180,106 +214,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Set up anonymous user drawer
+     * Sets up the drawer
      */
-    private void setUpAnonymousDrawer(){
-        mDrawer = null;
-        // Create drawer object
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(mToolbar)
-                .withRootView(R.id.drawer_frame_layout)
-                .withActionBarDrawerToggleAnimated(true)
-                .withDisplayBelowStatusBar(false)
-                .withTranslucentStatusBar(false)
-                .withSliderBackgroundColorRes(R.color.colorText)
-                .addDrawerItems(
-                        new SecondaryDrawerItem().withIdentifier(1).withName("Sign In").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(2).withName("My Points").withTextColorRes(R.color.colorText).withBadge("0").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.colorAccent)).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(3).withName("My Orders").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(4).withName("My Details").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(5).withName("About").withTextColorRes(R.color.colorText).withSelectable(false)
-                )
-                .withSliderBackgroundColorRes(R.color.colorPrimary)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Intent intent;
-                        if (drawerItem != null){
-                            if(drawerItem.getIdentifier() == 0){
-                                mDrawer.closeDrawer();
-                            }
-                            else if(drawerItem.getIdentifier() == 1){
-                                intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                        return true;
-                    }
-                })
-                .build();
+    private void setUpDrawer(){
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     /**
-     * Set up a signed in user drawer
+     * Set up signed in drawer and load
+     * user information
      */
     private void setUpSignedInDrawer(){
-        mDrawer = null;
-
-        // Lets material drawer load images
-        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
-            @Override
-            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
-            }
-
-            @Override
-            public void cancel(ImageView imageView) {
-                Picasso.with(imageView.getContext()).cancelRequest(imageView);
-            }
-        });
-
-        // Create header
-        AccountHeader header = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.color.colorPrimary)
-                .addProfiles(
-                        new ProfileDrawerItem().withName(mUser.getDisplayName()).withEmail(mUser.getEmail()).withIcon(mUser.getPhotoUrl())
-                )
-                .build();
-
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(mToolbar)
-                .withRootView(R.id.drawer_frame_layout)
-                .withDisplayBelowStatusBar(false)
-                .withTranslucentStatusBar(false)
-                .withActionBarDrawerToggleAnimated(true)
-                .withSliderBackgroundColorRes(R.color.colorText)
-                .withAccountHeader(header)
-                .addDrawerItems(
-                        new SecondaryDrawerItem().withIdentifier(2).withName("My Points").withTextColorRes(R.color.colorText).withBadge("2000").withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.colorAccent)).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(3).withName("My Orders").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(4).withName("My Details").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(5).withName("About").withTextColorRes(R.color.colorText).withSelectable(false),
-                        new SecondaryDrawerItem().withIdentifier(6).withName("Sign Out").withTextColorRes(R.color.colorText).withSelectable(false)
-                )
-                .withSliderBackgroundColorRes(R.color.colorPrimary)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null){
-                            if(drawerItem.getIdentifier() == 6){
-                                mAuth.signOut();
-                                mDrawer.closeDrawer();
-                                setUpAnonymousDrawer();
-                            }
-                        }
-                        return true;
-                    }
-                })
-                .build();
+        View headerView = mNavigationView.getHeaderView(0);
+        CircleImageView profileImageView = (CircleImageView) headerView.findViewById(R.id.profile_image_view);
+        Picasso.with(this).load(mUser.getPhotoUrl()).into(profileImageView);
+        mNavigationView.getMenu().clear();
+        mNavigationView.inflateMenu(R.menu.signed_in_drawer);
+        changeMenuTypeFace(mNavigationView.getMenu());
     }
+
+    /**
+     * Set up anonymous drawer
+     */
+    private void setUpAnonymousDrawer(){
+        View headerView = mNavigationView.getHeaderView(0);
+        CircleImageView profileImageView = (CircleImageView) headerView.findViewById(R.id.profile_image_view);
+        profileImageView.setImageResource(R.drawable.ic_account_circle_black_48dp);
+        mNavigationView.getMenu().clear();
+        mNavigationView.inflateMenu(R.menu.anonymous_drawer);
+        changeMenuTypeFace(mNavigationView.getMenu());
+    }
+
+    /**
+     * Change Typeface of menu
+     */
+    private void changeMenuTypeFace(Menu menu){
+        for (int i = 0;i < menu.size();i++) {
+            MenuItem mi = menu.getItem(i);
+
+            SubMenu subMenu = mi.getSubMenu();
+            if (subMenu!=null && subMenu.size() >0 ) {
+                for (int j=0; j <subMenu.size();j++) {
+                    MenuItem subMenuItem = subMenu.getItem(j);
+                    applyFontToMenuItem(subMenuItem);
+                }
+            }
+
+            //the method we have create in activity
+            applyFontToMenuItem(mi);
+        }
+    }
+
 
     /**
      * Starts FilteredCategoryFragment class
@@ -307,6 +299,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void applyFontToMenuItem(MenuItem mi) {
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
+        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+        mNewTitle.setSpan(new CustomTypefaceSpan("" , font), 0 , mNewTitle.length(),  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mi.setTitle(mNewTitle);
+    }
+
     /**
      * Starts ItemFragment with Object
      * retrieved from ItemList
@@ -314,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
     public void startItemFragment(Item item){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ItemFragment.newInstance(item));
+        transaction.addToBackStack(FragmentName.ITEM.toString());
         transaction.commit();
     }
 

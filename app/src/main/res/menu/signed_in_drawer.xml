@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/ic_home_24dp"
+                android:title="Home"/>
+        <item
+                android:id="@+id/nav_points"
+                android:icon="@drawable/ic_star_black_18dp"
+                android:title="My Points"/>
+        <item
+                android:id="@+id/nav_history"
+                android:icon="@drawable/ic_assignment_black_18dp"
+                android:title="My History"/>
+        <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_details_black_18dp"
+                android:title="About"/>
+        <item
+                android:id="@+id/nav_sign_out"
+                android:icon="@drawable/ic_do_not_disturb_black_18dp"
+                android:title="Sign Out"/>
+    </group>
+
+</menu>

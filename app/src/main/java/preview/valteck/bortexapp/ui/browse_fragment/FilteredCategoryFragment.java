@@ -30,6 +30,7 @@ public class FilteredCategoryFragment extends Fragment {
 
     private ArrayList<Item> mItemsList;
     private ArrayList<Item> mFavouriteItemsList;
+    private SubCategoryAdapter mAdapter;
     private Typeface mRalewayFontLight;
     private Typeface mRalewayFontSemiBold;
 
@@ -44,6 +45,7 @@ public class FilteredCategoryFragment extends Fragment {
         this.mFavouriteItemsList = ((MainActivity) getActivity()).mFavouriteItemsList;
         this.mRalewayFontLight = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Light.ttf");
         this.mRalewayFontSemiBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-SemiBold.ttf");
+        this.mAdapter = new SubCategoryAdapter();
     }
 
     @Nullable
@@ -51,7 +53,7 @@ public class FilteredCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_browse, container, false);
         GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        gridView.setAdapter(new SubCategoryAdapter());
+        gridView.setAdapter(mAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,12 +61,6 @@ public class FilteredCategoryFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mItemsList.clear();
     }
 
     static class ViewHolder{

@@ -3,8 +3,12 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#858383</color>
     <color name="colorPrimaryBackground">#EEEEEE</color>
+
     <color name="colorAccent">#000000</color>
     <color name="colorActiveButton">#1FB622</color>
     <color name="colorText">#3E3E3E</color>
     <color name="colorLine">#56C5C1C0</color>
+
+    <color name="colorGoogle">#DB4437</color>
+    <color name="colorFacebook">#3B5998</color>
 </resources>

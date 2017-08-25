@@ -86,8 +86,9 @@ public class LoginActivity extends AppCompatActivity{
         final EditText passwordEditTextView = (EditText) findViewById(R.id.password);
         Button signInButton = (Button) findViewById(R.id.email_sign_in_button);
         Button registerButton = (Button) findViewById(R.id.register_button);
-        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
-        LoginButton facebookSignInButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+        Button googleSignInButton = (Button) findViewById(R.id.google_sign_in_button);
+        final LoginButton facebookButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+        Button facebookSignInButton = (Button) findViewById(R.id.facebook_button);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 
         // Set views functionality
@@ -121,8 +122,8 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        facebookSignInButton.setReadPermissions("email", "public_profile");
-        facebookSignInButton.registerCallback(mCallBackManager, new FacebookCallback<LoginResult>() {
+        facebookButton.setReadPermissions("email", "public_profile");
+        facebookButton.registerCallback(mCallBackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookAccessToken(loginResult.getAccessToken());
@@ -136,6 +137,13 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onError(FacebookException error) {
                 showSnackBar("Error signing in " + error.getMessage());
+            }
+        });
+
+        facebookSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                facebookButton.performClick();
             }
         });
 

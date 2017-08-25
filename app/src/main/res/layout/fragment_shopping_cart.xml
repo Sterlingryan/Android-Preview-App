@@ -13,8 +13,8 @@
                 android:paddingTop="8dp"
                 android:scrollbars="none"
                 android:clipToPadding="false"
-                android:divider="@color/colorPrimaryDark"
-                android:dividerHeight="0.5dp"/>
+                android:divider="@android:color/transparent"
+                android:dividerHeight="15dp"/>
 
         <Button
                 android:id="@+id/pay_now_button"
