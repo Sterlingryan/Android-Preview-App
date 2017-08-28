@@ -1,13 +1,9 @@
 package preview.valteck.bortexapp.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -21,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,16 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.facebook.login.LoginManager;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
-import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -141,6 +126,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             default:
                 mDrawer.closeDrawers();
+                showToast(R.string.preview_purpose_only);
                 break;
         }
         return true;
@@ -282,6 +268,7 @@ public class MainActivity extends AppCompatActivity
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mItemsList.clear();
                 for (DataSnapshot child: dataSnapshot.getChildren()){
                     Item item = child.getValue(Item.class);
                     mItemsList.add(item);
@@ -319,9 +306,14 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Shows a message through a
-     * snackbar
+     * toast
      */
-    public void showSnackBar(int messageId){
-        Toast.makeText(this, getString(messageId), Toast.LENGTH_SHORT).show();
+    public void showToast(int messageId){
+        if(messageId == R.string.preview_purpose_only){
+            Toast.makeText(this, getString(messageId), Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this, getString(messageId), Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package preview.valteck.bortexapp.ui.favourites_fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ import preview.valteck.bortexapp.ui.shopping_cart_fragment.ShoppingCartFragment;
 public class FavouritesFragment extends Fragment{
 
     private ArrayList<Item> mFavouritesItemList;
+    private LinearLayout mLinearLayout;
 
     public static Fragment newInstance() {
         FavouritesFragment fragment = new FavouritesFragment();
@@ -44,11 +47,25 @@ public class FavouritesFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ListView favouritesListView = (ListView) inflater.inflate(R.layout.fragment_favourites, container, false);
+        View view = inflater.inflate(R.layout.fragment_favourites, container, false);
+        ListView favouritesListView = (ListView) view.findViewById(R.id.favourite_items_list_view);
+        mLinearLayout = (LinearLayout) view.findViewById(R.id.no_content_view);
 
+        TextView noContentTextView = (TextView) view.findViewById(R.id.no_content_text);
+        noContentTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf"));
+
+        checkFavouriteItemsIsEmpty();
         favouritesListView.setAdapter(new FavouritesListAdapter());
-        return favouritesListView;
+        return view;
 
+    }
+
+    private void checkFavouriteItemsIsEmpty(){
+        if(mFavouritesItemList.isEmpty()){
+            mLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            mLinearLayout.setVisibility(View.GONE);
+        }
     }
 
     private static class ViewHolder{
@@ -118,6 +135,12 @@ public class FavouritesFragment extends Fragment{
             });
 
             return convertView;
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            checkFavouriteItemsIsEmpty();
         }
     }
 }

@@ -111,10 +111,10 @@ public class ItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (sizeSpinner.getSelectedItemPosition() == 0 ){
-                    mainActivity.showSnackBar(R.string.choose_size);
+                    mainActivity.showToast(R.string.choose_size);
                 }
                 else if(colorSpinner.getSelectedItemPosition() == 0){
-                    mainActivity.showSnackBar(R.string.choose_color);
+                    mainActivity.showToast(R.string.choose_color);
                 }
                 else{
                     v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -127,7 +127,7 @@ public class ItemFragment extends Fragment {
                                                 mItem.getDescription(),
                                                 mItem.getPrice(),
                                                 mItem.getItemType());
-                    mainActivity.showSnackBar(R.string.added_to_cart_success);
+                    mainActivity.showToast(R.string.added_to_cart_success);
                     mainActivity.mCartList.add(cartItem);
                 }
             }

@@ -16,6 +16,29 @@
                 android:divider="@android:color/transparent"
                 android:dividerHeight="15dp"/>
 
+        <LinearLayout
+                android:id="@+id/no_content_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_vertical|center_horizontal">
+
+                <ImageView
+                        android:layout_width="175dp"
+                        android:layout_height="175dp"
+                        android:src="@drawable/ic_remove_shopping_cart_black_48dp"/>
+
+                <TextView
+                        android:id="@+id/no_content_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/no_cart_items"
+                        android:textSize="16sp"
+                        android:textAlignment="center"/>
+        </LinearLayout>
+
         <Button
                 android:id="@+id/pay_now_button"
                 android:layout_width="match_parent"

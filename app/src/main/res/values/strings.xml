@@ -6,6 +6,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="pay_now_button">Pay Securely Now</string>
     <string name="euro_symbol">€</string>
+    <string name="no_favourite_items">You have no favourites</string>
+    <string name="no_cart_items">There\'s nothing in your shopping cart</string>
+    <string name="preview_purpose_only">This app is used for preview purposes only, some features have been removed</string>
 
     <!-- Categories Strings-->
     <string-array name="categories">
